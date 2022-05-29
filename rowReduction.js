@@ -159,15 +159,14 @@ class Matrix {
                             constantVector[i] -= (output2D[i][k]*constantVector[k]);
                         }  
                         constantVector[i] /= output2D[i][j];
+                        
                     }
                 }
                 output2D[i][j];
             }
         }
         console.log("constantVector",constantVector);
-        console.log("fixed constantVector[0]",constantVector[0].toFixed(8));
-        console.log("fixed constantVector[1]",constantVector[1].toFixed(8));
-        console.log("fixed constantVector[2]",constantVector[2].toFixed(8));
+        
 
     }
 
