@@ -6,8 +6,7 @@ window.onload = function () {
     // console.log("transposed", testArray.transposed);
     // testArray.multipliedByItsTransposed();
     // testArray.backSubstitution();
-
-    testArray.gaussianElimination();
+    testArray.rowReduction();
 }
 
 
@@ -34,7 +33,7 @@ class Matrix {
         }
         this.data = array2D;
     }
-
+    //転置行列生成
     transpose() {
         var row = this.colInt;
         var col = this.rowInt;
@@ -47,7 +46,7 @@ class Matrix {
         }
         this.transposed = array2D;
     }
-
+    //行列と転置行列の積の成果物
     multipliedByItsTransposed() {
         var row = this.colInt;
         var col = this.rowInt;
@@ -68,24 +67,23 @@ class Matrix {
         }
         console.log("MBIT", array2D)
     }
-    
-
+    //逆行列生成
     inverse() {
         // todo A^-1
     }
 
-    gaussianElimination(){
-        var n = 4;
-        var m = 4;
+    rowReduction(){
+        var n = 3;
+        var m = 3;
         let array2D = [[]];
         let output2D = [[]];
-        let dataSource = [0.02,0.01,0,0,1,2,1,0,0,1,2,1,0,0,100,200];//[1,2,-4,2,5,-9,3,-2,3];
+        let dataSource = [0,2,3,1,1,1,4,8,-3];//[1,2,-4,2,5,-9,3,-2,3];
         var data_i = 0;
         var rowPivot = 0;
         var columnPivot = 0;
         let pivot = [];
         var maximumPivotValue = 0;
-        var constantVector = [0.02,1,4,800];//[-4,-10,11];
+        var constantVector = [3,4,35];//[-4,-10,11];
         var sortSwaped = [];
         //set up a matrix
         for (let i = 0; i < n; i++) {
@@ -110,12 +108,16 @@ class Matrix {
             maximumPivotValue = output2D[k][k];
 
             for (let r = k; r < m; r++) {
-                for (let c = k; c < n; c++) { 
-                    if (maximumPivotValue < output2D[r][c]) {
-                        maximumPivotValue = output2D[r][c];
-                        rowPivot = r;
-                        columnPivot = c;
-                    }  
+                for (let c = k; c < n; c++) {
+                    //this time we only use row pivoting
+                    // if (c == k) {
+                        // console.log(r,c, array2D[r][c]); 
+                        if (maximumPivotValue < output2D[r][c]) {
+                            maximumPivotValue = output2D[r][c];
+                            rowPivot = r;
+                            columnPivot = c;
+                        }  
+                    // }
                 }
             }
         
@@ -126,9 +128,16 @@ class Matrix {
                 for (let c = k; c < n; c++) {
                 
                     let a = output2D[k][c];
+                    // let a = Object.assign({},output2D[k][c]);
                     let b = output2D[rowPivot][c];
                     output2D[k][c] = b;
-                    output2D[rowPivot][c] = a;           
+                    output2D[rowPivot][c] = a;
+                    // if (k == 0) {
+                    //     console.log("kc",k,c,output2D[k][c] );  
+                    //     console.log("rowPivot c",rowPivot,c, output2D[rowPivot][c]);  
+                    //     // console.log("output2D row, c",output2D[rowPivot][c]);  
+                    //     console.log("original",array2D);   
+                    // }           
                 }
             }
 
@@ -154,8 +163,8 @@ class Matrix {
                 }
             }
         }
-        // console.log("output2D_r",output2D);
-        // console.log("constantVector_r",constantVector);
+        console.log("output2D_r",output2D);
+        console.log("constantVector_r",constantVector);
 
         //backSubstitution
         //see how it goes
@@ -184,9 +193,9 @@ class Matrix {
         }
 
         console.log("constantVector",constantVector);
-        // console.log("fixed constantVector[0]",constantVector[0].toFixed(8));
-        // console.log("fixed constantVector[1]",constantVector[1].toFixed(8));
-        // console.log("fixed constantVector[2]",constantVector[2].toFixed(8));
+        console.log("fixed constantVector[0]",constantVector[0].toFixed(8));
+        console.log("fixed constantVector[1]",constantVector[1].toFixed(8));
+        console.log("fixed constantVector[2]",constantVector[2].toFixed(8));
 
     }
 
